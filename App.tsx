@@ -1,14 +1,17 @@
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
- *
  * Generated with the TypeScript template
  * https://github.com/react-native-community/react-native-template-typescript
- *
  * @format
  */
 
 import React from 'react';
+
+// 导航配置
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from "@react-navigation/stack";
+// 原生组件
 import {
     SafeAreaView,
     ScrollView,
@@ -20,6 +23,11 @@ import {
     Image
 } from 'react-native';
 
+// redux
+import store from './src/reduxState/store';
+import {Provider} from "react-redux";
+import Routers from './src/routers/routers';
+// 系统
 import {
     Colors,
     DebugInstructions,
@@ -28,67 +36,7 @@ import {
     ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-const Section: React.FC<{
-    title: string;
-}> = ({children, title}) => {
-    const isDarkMode = useColorScheme() === 'dark';
-    return (
-        <View style={styles.sectionContainer}>
-            <Image style={styles.WidthFull} source={require('./assets/img/es6.jpeg')}/>
-            <Text
-                style={[
-                    styles.sectionTitle,
-                    {
-                        color: isDarkMode ? Colors.white : Colors.black,
-                    },
-                ]}>
-                {title}
-            </Text>
-            <Text
-                style={[
-                    styles.sectionDescription,
-                    {
-                        color: isDarkMode ? Colors.light : Colors.dark,
-                    },
-                ]}>
-                {children}
-            </Text>
-        </View>
-    );
-};
-
-const App = () => {
-    const isDarkMode = useColorScheme() === 'dark';
-
-    const backgroundStyle = {
-        backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    };
-
-    return (
-        <SafeAreaView style={[backgroundStyle,styles.WidthFull]}>
-            <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'}/>
-            <ScrollView
-                contentInsetAdjustmentBehavior="automatic"
-                style={backgroundStyle}>
-                <Header/>
-                <View
-                    style={{
-                        backgroundColor: isDarkMode ? Colors.black : Colors.white,
-                    }}>
-                    <Section title="Step One">
-                        Edit <Text style={styles.highlight}>App.js</Text> to change this
-                        screen and then come back to see your edits.
-                    </Section>
-                    <Section title="Learn More">
-                        Read the docs to discover what to do next:
-                    </Section>
-                    <LearnMoreLinks/>
-                </View>
-            </ScrollView>
-        </SafeAreaView>
-    );
-};
-
+// 样式定义
 const styles = StyleSheet.create({
     sectionContainer: {
         marginTop: 32,
@@ -110,5 +58,18 @@ const styles = StyleSheet.create({
         width: '100%',
     }
 });
+const {Navigator, Screen} = createStackNavigator()
+// 唯一入口
+const APP = () => {
+    const isDarkMode = useColorScheme() === 'dark';
+    const backgroundStyle = {
+        backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    };
+    return (
+        <Provider store={store}>
+            <Routers/>
+        </Provider>
+    )
 
-export default App;
+}
+export default APP;
